@@ -11,6 +11,20 @@ Humidity sensor (or hygrometer) senses, measures and reports both moisture and a
 temperature. Humidity sensors work by detecting changes that alter electrical currents or
 temperature in the air.
 
+Mechanical Sensor- Class of sensors to measure mechanical phenomena. Includes
+Pressure sensor, Force and torque sensor, inertial sensor, Flow sensor.
+● Example a mercury in glass thermometer.
+● Transducer -a device that converts a primary form of energy into a corresponding signal with a different energy forms.
+● Sensor- a device that detect or measures a signal.
+● Actuator -a device that generates a signal. sensor intelligent real world actuator feedback system
+Pressure sensor is use to measure the pressure of fluid and gas in industrial application.
+● Force and torque sensor- The fundamental operating principles of force and torque
+sensor instrumentation are closely allied to the piezoelectric and strain gage devices
+used to measure static and dynamic pressures.
+● Flow Sensor - A flow sensor is a device for sensing the rate of flow of material.
+Material may be solid liquid or gas.
+
+
 PRAC: 2
 What is TinyOS
 1. TinyOS is an operating system for sensor nodes.
@@ -68,4 +82,3 @@ power in specific directions allowing increased performance and reduced interfer
 Directional antennas pull in signals better from one direction. In this direction, they can detect a weaker or more distant signal than an equivalent
 omnidirectional antenna. The trade-off is that they do this by decreasing their ability to pull in signals from other directions.
 Most common directional antenna is the dish used with satellite Internet and satellite television installations.
-
