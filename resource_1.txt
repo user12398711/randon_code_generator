@@ -45,12 +45,11 @@ nesC is a component-based, event-driven programming language used to build appli
 it has 3 components; interface: describes the use of some kind of service. provider: set of method calls that are exposed to higher layers. uses: abstract usere level methods. 
 
 PRAC: 3
+TOSSIM is a simulator for the execution of nesC model on TinyOS/MICA hardware. TOSSIM further works as an emulator of actual hardware through mapping hardware interrupts to discrete events. TOSSIM also has a built-in simulated radio model.
 TOSSIM is a discrete event simulator for TinyOS sensor networks. Instead of compiling a TinyOS application
 for a mote, users can compile it into the TOSSIM framework, which runs on a PC. This allows users to debug,
 test, and analyze algorithms in a controlled and repeatable environment. As TOSSIM runs on a PC, users can
-examine their TinyOS code using debuggers and other development tools. This document briefly describes
-the design philosophy of TOSSIM, its capabilities, its structure. It also provides a brief tutorial on how to
-use TOSSIM for testing or analysis.
+examine their TinyOS code using debuggers and other development tools. 
 TOSSIM’s primary goal is to provide a high fidelity simulation of TinyOS applications. For this reason,
 it focuses on simulating TinyOS and its execution, rather than simulating the real world. While TOSSIM
 can be used to understand the causes of behavior observed in the real world, it does not capture all of them,
@@ -82,3 +81,4 @@ power in specific directions allowing increased performance and reduced interfer
 Directional antennas pull in signals better from one direction. In this direction, they can detect a weaker or more distant signal than an equivalent
 omnidirectional antenna. The trade-off is that they do this by decreasing their ability to pull in signals from other directions.
 Most common directional antenna is the dish used with satellite Internet and satellite television installations.
+
