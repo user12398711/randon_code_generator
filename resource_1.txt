@@ -5,4 +5,67 @@ A wireless sensor network (WSN) is a hardware and software package that is typic
 ‘Base Station’ computer connects the system to the internet, so that data collected by the nodes, then transmitted to the base station computer, can be viewed anywhere with an internet connection is available.
 ‘Graphical User Interface’ is the web-based software package that allows the data collected by sensors to be viewed.
 
+Temperature sensors are a simple instrument that measures the degree of hotness or coolness and converts it into a readable unit.
+A temperature sensor is a device, typically, a thermocouple or resistance temperature detector that provides temperature measurement in a readable form through an electrical signal. The working of a temperature meter depends upon the voltage across the diode. The temperature change is directly proportional to the diode’s resistance. 
+Humidity sensor (or hygrometer) senses, measures and reports both moisture and air
+temperature. Humidity sensors work by detecting changes that alter electrical currents or
+temperature in the air.
+
 PRAC: 2
+What is TinyOS
+1. TinyOS is an operating system for sensor nodes.
+2. A small operating system for Microcontrollers
+3. Create a uniform abstraction (e.g. Device Abstraction)
+4. An Open-Source Development Environment
+– Hardware drivers, libraries, tools, compiler
+5. applilcation = scheduler + graph of components
+6. A Component Based Architecture and event-driven architecture
+7. Single shared stack
+8. NO kernel, process/memory management,virtual memory
+9. A Programming Language & Model-nesC Language
+10. TinyOS applications are written in nesC
+– C dialect with extra features
+– nesC compiler converts your application into plain C code
+
+nesC is a component-based, event-driven programming language used to build applications for the TinyOS platform. TinyOS is an operating environment designed to run on embedded devices. nesC is built as an extension to the C programming language with components "wired" together to run applications on TinyOS. 
+it has 3 components; interface: describes the use of some kind of service. provider: set of method calls that are exposed to higher layers. uses: abstract usere level methods. 
+
+PRAC: 3
+TOSSIM is a discrete event simulator for TinyOS sensor networks. Instead of compiling a TinyOS application
+for a mote, users can compile it into the TOSSIM framework, which runs on a PC. This allows users to debug,
+test, and analyze algorithms in a controlled and repeatable environment. As TOSSIM runs on a PC, users can
+examine their TinyOS code using debuggers and other development tools. This document briefly describes
+the design philosophy of TOSSIM, its capabilities, its structure. It also provides a brief tutorial on how to
+use TOSSIM for testing or analysis.
+TOSSIM’s primary goal is to provide a high fidelity simulation of TinyOS applications. For this reason,
+it focuses on simulating TinyOS and its execution, rather than simulating the real world. While TOSSIM
+can be used to understand the causes of behavior observed in the real world, it does not capture all of them,
+and should not be used for absolute evaluations.
+TOSSIM is not always the right simulation solution; like any simulation, it makes several assumptions,
+focusing on making some behaviors accurate while simplying others. 
+
+PRAC 6:
+Routing Table:
+A routing table is a set of rules, often viewed in table format, that is used to determine where
+data packets traveling over an Internet Protocol (IP) network will be directed. All IP-enabled
+devices, including routers and switches, use routing tables.
+A routing table contains the information necessary to forward a packet along the best path
+toward its destination. Each packet contains information about its origin and destination.
+Routing Table provides the device with instructions for sending the packet to the next hop on its route across the network.
+Each entry in the routing table consists of the following entries:
+1. Network ID: The network ID or destination corresponding to the route.
+2. Subnet Mask: The mask that is used to match a destination IP address to the network ID.
+3. Next Hop: The IP address to which the packet is forwarded
+4. Outgoing Interface: Outgoing interface the packet should go out to reach the destination network.
+5. Metric: A common use of the metric is to indicate the minimum number of hops (routers crossed)
+to the network ID.
+
+PRAC 10:
+Directional antenna is a radio-frequency (RF) wireless antenna designed to function more effectively 
+in some directions than in others. The purpose of that directionality is improving transmission and reception of communications and reducing interference.
+A directional antenna or beam antenna is an antenna which radiates or receives greater
+power in specific directions allowing increased performance and reduced interference from unwanted sources.
+Directional antennas pull in signals better from one direction. In this direction, they can detect a weaker or more distant signal than an equivalent
+omnidirectional antenna. The trade-off is that they do this by decreasing their ability to pull in signals from other directions.
+Most common directional antenna is the dish used with satellite Internet and satellite television installations.
+
