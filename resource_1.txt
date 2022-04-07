@@ -1,0 +1,8 @@
+PRAC: 1
+A wireless sensor network (WSN) is a hardware and software package that is typically.
+‘Sensors’ connected to each node by a wired connection. In our case, we use Sensors that can measure soil moisture, electrical conductivity, soil temperature, Water pressure, flow rate, or a range of weather variables (light, air temperature, wind, humidity, etc.).
+‘Nodes’ collect the data from sensors and transmit that to a ‘base station Computer using a one way (in the case of monitoring) or two-way (in the case of Monitoring and control) radio. Nodes can simply monitor environmental and Soil conditions or can be used to make control decisions. 
+‘Base Station’ computer connects the system to the internet, so that data collected by the nodes, then transmitted to the base station computer, can be viewed anywhere with an internet connection is available.
+‘Graphical User Interface’ is the web-based software package that allows the data collected by sensors to be viewed.
+
+PRAC: 2
