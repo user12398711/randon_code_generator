@@ -1,0 +1,432 @@
+##### 604 #####
+
+PRAC 1:
+a, b = 60, 13
+print(f"value of c {a&b}")
+print(f"value of c {a|b}")
+print(f"value of c {a^b}")
+print(f"value of c {~a}")
+print(f"value of c {a<<2}")
+
+
+PRAC 2:
+import nltk
+# nltk.download("punkt")
+# nltk.download("stopwords")
+
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+example = "this is an example senetence to test tokenizer"
+stop_words = set(stopwords.words('english'))
+word_tokens = word_tokenize(example)
+filter_sentence = [w for w in word_tokens if not w in stop_words]
+print(filter_sentence)
+print(word_tokens)
+
+PRAC 3:
+str1="horizon"
+str2="horizontal"
+
+def editDistDP(str1, str2, m , n):
+    if m==0:
+        return n
+    if n==0:
+        return m
+    if str1[m-1]==str2[n-1]:
+        return editDistDP(str1, str2, m-1, n-1)
+    return 1+ min(editDistDP(str1 , str2, m , n-1), editDistDP(str1, str2, m-1, n), editDistDP(str1, str2, m-1, n-1))
+
+print(editDistDP(str1, str2, len(str1), len(str2)))
+
+
+PRAC 4 similarity-
+import numpy as np
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+def process(raw):
+    with open(raw) as raw:
+        raw= raw.read()
+
+    stop_words= set(stopwords.words('english'))
+    word_tokens= word_tokenize(raw)
+    porter= nltk.stem.porter.PorterStemmer()
+    count = nltk.defaultdict(int)
+
+    words=[w for w in word_tokens if not w in stop_words]
+    stemmed_tokens=[porter.stem(t) for t in words]
+
+    for word in stemmed_tokens:
+        count[word] += 1
+    return count
+
+def cosine(a,b):
+    return np.dot(a,b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+def getSimilarity(dict1, dict2):
+    all_words_list = []
+    for key in dict1.keys():
+        all_words_list.append(key)
+    for key in dict2.keys():
+        all_words_list.append(key)
+
+    v1 = np.zeros(len(all_words_list))
+    v2 = np.zeros(len(all_words_list))
+
+    for index, key in enumerate(all_words_list):
+        v1[index] = dict1.get(key,0)
+        v2[index] = dict2.get(key,0)
+    return cosine(v1,v2)
+
+if __name__=='__main__':
+    dict1 = process("text1.txt")
+    dict2 = process("text2.txt")
+    print(getSimilarity(dict1,dict2))
+
+Practical 5 twitter-
+import tweepy
+
+auth=tweepy.OAuthHandler(ck,cs)
+auth.set_access_token(at,atc)
+api=tweepy.API(auth)
+
+name='ninja'
+tweetCount=20
+results=api.user_timeline(id=name,count=tweetCount)
+for tweet in results:
+    print(tweet.text)
+
+Practical 6 WEB-
+
+from html.parser import HTMLParser
+from urllib.request import urlopen
+from urllib import parse
+
+class LinkParser(HTMLParser):
+    def getLinks(self,url):
+        self.links=[]
+        self.baseUrl=url
+        response=urlopen(url)
+        if response.getheader('Content-Type')=='text/html':
+            htmlString=response.read().decode('utf-8')
+            self.feed(htmlString)
+            return htmlString, self.links
+        else:
+            return "", []
+
+def spider(url,word,maxPages):
+    pagesToVisit=[url]
+    numberVisited=0
+    foundWord=False
+
+    while numberVisited < maxPages and pagesToVisit !=[] and not foundWord:
+        numberVisited=numberVisited+1
+        url=pagesToVisit[0]
+        pagesToVisit=pagesToVisit[1:]
+
+        try:
+            print(numberVisited,'Visited:',url)
+            parser=LinkParser()
+            data,links=parser.getLinks(url)
+            #data,links=parser.getLinks(url)
+            if data.find(word)-1:
+                foundWord=True
+
+            pagesToVisit=pagesToVisit + links
+            print("**Success!**")
+        except:
+            print("**Failed!**")
+    if foundWord:
+        print('The word ',word,' was found at',url)
+    else:
+        print('Word never found!')
+
+spider("http://www.dreamhost.com","wngines",100)
+
+
+PRAC 6 alternative code:
+import requests
+from bs4 import BeautifulSoup
+
+def parser(url = ("https://"+"www.amazon.in")):
+    plain = requests.get(url).text
+    s = BeautifulSoup(plain,features="html.parser")
+    for link in s.find_all("a"):
+        print(link.get("href"))
+
+
+
+Practical 7 pagerank
+
+import numpy as np
+from scipy.sparse import csc_matrix
+def pageRank(G, s=0.85, maxerr=0.0001):
+    n = G.shape[0]
+    A = csc_matrix(G,dtype=float)
+    rsums = np.array(A.sum(1))[:,0]
+    ri, ci = A.nonzero()
+    A.data /= rsums[ri]
+    sink = rsums == 0
+
+    ro, r = np.zeros(n), np.ones(n)
+    while np.sum(np.abs(r-ro))  maxerr:
+        ro = r.copy()
+        for i in range(0,n):
+            Ai = np.array(A[:,1].todense())[:,0]
+            Di = sink / float(n)
+            Ei = np.ones(n) / float(n)
+            r[i] = ro.dot(Ai*s+Di*s+Ei*(1-s))
+        return r / float(sum(r))
+
+if __name__ == '__main__':
+    G = np.array([[0,0,1,0,0,0,0],[0,1,1,0,0,0,0],[1,0,1,1,0,0,0],[0,0,0,1,1,0,0],[0,0,0,0,0,0,1],[0,0,0,0,0,1,1],[0,0,0,1,1,0,1]])
+    print(pageRank(G,s=0.85))
+
+Practical 8 rss
+
+import requests
+import xml.etree.ElementTree as ET
+import csv
+def loadRSS():
+    url = 'http://hindustantimes.com/rss/topnews/rssfeed.xml'
+    resp = requests.get(url)
+    with open('topnewsfeed.xml', 'wb') as f:
+        f.write(resp.content)
+
+def parseXML(xmlfile):
+    tree = ET.parse(xmlfile)
+    root = tree.getroot()
+    newsitems = []
+
+    for item in root.findall('./channel/item'):
+        news = {}
+        for child in item:
+            if child.tag == '{http://search.yahoo.com/mrss/}content':
+                news['media'] = child.attrib['url']
+            elif child.text is not None:
+                news[child.tag] = child.text.encode('utf-8')
+            else:
+                newsitems.append(news)
+    return newsitems
+
+def savetoCSV(newsitems, filename):
+    fields = ['guide', 'title', 'pubDate', 'description', 'link', 'media']
+
+    with open(filename, 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(newsitems)
+
+loadRSS()
+newsitems = parseXML('topnewsfeed.xml')
+savetoCSV(newsitems, 'topnews.csv')
+
+
+##### 606 #####
+Practical 1 - hypothesis
+x = c(6.2, 6.6, 7.1, 7.4, 7.6, 7.9, 8, 8.3, 8.4, 8.5, 8.6, 8.8, 8.8, 9.1, 9.2, 9.4, 9.4, 9.7, 9.9, 10.2, 10.4, 10.8, 11.3, 11.9)
+y = x * 1.5
+t.test(x - 9, alternative = "two.sided", conf.level = 0.95)
+t.test(x, y, alternative = "two.sided", mu = 0, var.equal = F, conf.level = 0.95)
+
+
+Practical 2 - time series
+data("AirPassengers")
+class("AirPassengers")
+start("AirPassengers")
+end("AirPassengers")
+frequency("AirPassengers")
+summary("AirPassengers")
+plot(AirPassengers)
+abline(reg = lm(AirPassengers~time(AirPassengers)))
+cycle(AirPassengers)
+boxplot(AirPassengers~cycle(AirPassengers))
+
+Practical 3 - couchdb
+# install.packages('sofa')
+library('sofa')
+library('jsonlite')
+
+x=Cushion$new()
+x$ping()
+db_create(x, dbname='ty')
+db_list(x)
+
+doc_create(x, '{"rollno":"01", "name":"ABC1", "grade":"A", "remark":"pass"}', dbname="ty", docid="a_1")
+doc_create(x, '{"rollno":"02", "name":"ABC2", "grade":"A", "remark":"pass"}', dbname="ty", docid="a_2")
+doc_create(x, '{"rollno":"03", "name":"ABC3", "grade":"A", "remark":"pass"}', dbname="ty", docid="a_3")
+
+db_changes(x, 'ty')
+
+db_query(x, dbname='ty', selector=list('_id'=list('$gt'=NULL)))$docs
+db_query(x, dbname='ty', selector=list('grade'='A'))$docs
+db_query(x, dbname='ty', selector=list('remark'='pass'))$docs
+db_query(x, dbname='ty', selector=list('rollno'=list('$gt'='02')), fields=c('name','grade'))$docs
+
+res = db_query(x, dbname='ty', selector=list('_id'=list('$gt'=NULL)), as='json')
+fromJSON(res)$docs
+
+doc_delete(x, dbname='ty', docid='a_2')
+doc_get(x, dbname='ty', docid='a_2')
+
+doc_create(x, '{"diva":"delve", "happy":"hours", "chirpy":"ours"}', dbname="ty", docid="a_3")
+doc_update(x, '{"diva":"delve", "happy":"hours", "chirpy":"ours"}', dbname="ty", docid="a_1", rev='1-f8088194a68b336f128ce7eb4f55252a')
+
+
+Practical 4 - linear regression
+res = lsfit(iris$Petal.Length, iris$Petal.Width)$coefficients
+plot(iris$Petal.Length, iris$Petal.Width, pch=21, bg=c("red","green3","blue")[unclass(iris$Species)])
+abline(res)
+
+res = lm(Petal.Width ~ Petal.Length, data=iris)
+plot(iris$Petal.Length, iris$Petal.Width, pch=21, bg=c("red","green3","blue")[unclass(iris$Species)])
+abline(res$coefficients)
+summary(res)
+
+res = lm(Sepal.Length ~ Sepal.Width, data=iris)
+plot(iris$Sepal.Width, iris$Sepal.Length, pch=21, bg=c("red","green3","blue")[unclass(iris$Species)])
+abline(res$coefficients)
+summary(res)
+
+plot(iris$Sepal.Width, iris$Sepal.Length, pch=21, bg=c("red","green3","blue")[unclass(iris$Species)])
+abline(lm(Sepal.Length ~ Sepal.Width, data=iris)$coefficients, col="black")
+abline(lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="setosa"),])$coefficients, col="red")
+abline(lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="versicolor"),])$coefficients, col="green3")
+abline(lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="virginica"),])$coefficients, col="blue")
+
+lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="setosa"),])$coefficients
+lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="versicolor"),])$coefficients
+lm(Sepal.Length ~ Sepal.Width, data=iris[which(iris$Species=="virginica"),])$coefficients
+
+lm(Sepal.Length ~ Sepal.Width:Species + Species - 1, data=iris)$coefficients
+lm(Sepal.Length ~ Sepal.Width:Species + Species, data=iris)$coefficients
+
+summary(lm(Sepal.Length ~ Sepal.Width:Species + Species - 1, data=iris))
+summary(step(lm(Sepal.Length ~ Sepal.Width * Species, data=iris)))
+
+
+Practical 5 - logistics regression
+library(datasets)
+ir_data = iris
+head(ir_data)
+str(ir_data)
+levels(ir_data$Species)
+sum(is.na(ir_data))
+ir_data=ir_data[1:100,]
+set.seed(100)
+samp=sample(1:100,80)
+ir_test=ir_data[samp,]
+ir_ctrl=ir_data[-samp,]
+
+# install.packages("ggplot2")
+# install.packages("GGally")
+# install.packages("zeallot")
+# install.packages("backports")
+
+library(ggplot2)
+library(GGally)
+ggpairs(ir_test)
+y=ir_test$Species; x=ir_test$Sepal.Length
+glfit=glm(y~x, family = 'binomial')
+summary(glfit)
+newdata=data.frame(x=ir_ctrl$Sepal.Length)
+predicted_val=predict(glfit, newdata, type="response")
+prediction=data.frame(ir_ctrl$Sepal.Length, ir_ctrl$Species,predicted_val)
+prediction
+qplot(prediction[,1], round(prediction[,3]), col=prediction[,2], xlab = 'Sepal Length', ylab='Prediction using Logistic Reg.')
+
+
+
+Practical 6 - PCA
+data_iris <- iris[1:4]
+Cov_data <- cov(data_iris )
+# Find out the eigenvectors and eigenvalues using the covariance matrix
+Eigen_data <- eigen(Cov_data)
+# Using the inbuilt function
+PCA_data <- princomp(data_iris ,cor="False")
+# Let’s now compare the output variances
+Eigen_data$values
+PCA_data$sdev^2
+PCA_data$loadings[,1:4]
+Eigen_data$vectors
+summary(PCA_data)
+biplot (PCA_data)
+screeplot(PCA_data, type="lines")
+#Select the first principal component for the second model
+model2 = PCA_data$loadings[,1]
+#For the second model, we need to calculate scores by multiplying our loadings with the data
+model2_scores <- as.matrix(data_iris) %*% model2
+#Loading libraries for naiveBayes model
+library(class)
+install.packages("e1071")
+library(e1071)
+#Fitting the first model over the entire data
+mod1<-naiveBayes(iris[,1:4], iris[,5])
+#Fitting the second model using the first principal component
+mod2<-naiveBayes(model2_scores, iris[,5])
+# Accuracy for the first model
+table(predict(mod1, iris[,1:4]), iris[,5])
+# Accuracy for the second model
+table(predict(mod2, model2_scores), iris[,5])
+
+Practical 7 - ANOVA
+data("warpbreaks")
+head(warpbreaks)
+summary(warpbreaks)
+
+model1<-aov(breaks~wool+tension,data=warpbreaks)
+summary(model1)
+plot(model1)
+
+model2<-aov(breaks~wool+tension+wool:tension,data=warpbreaks)
+summary(model2)
+plot(model2)
+
+Practical 8 - clustering
+library(datasets)
+library(ggplot2)
+head(iris)
+ggplot(iris,aes(Petal.Length,Petal.Width,color=Species))+geom_point()
+set.seed(15)
+iriscluster<-kmeans(iris[,3:4],3,nstart=15)
+iriscluster
+table(iriscluster$cluster,iris$Species)
+iriscluster$cluster<-as.factor(iriscluster$cluster)
+ggplot(iris,aes(Petal.Length,Petal.Width,color=iriscluster$cluster))+geom_point()
+ggplot(iris,aes(Petal.Length,Petal.Width,color=iriscluster$cluster,shape=iriscluster$cluster))+geom_point()
+
+
+Practical 9 - decision tree
+iris
+str(iris)
+library(rpart)
+library(rpart.plot)
+
+rpart.plot(rpart(Species~.,data=iris),extra="auto")
+
+Practical 10 -  mongodb
+use inventory
+
+db.product.insert({"productno":"p1","description":"earphone","company":"oneplus","price":8000});
+db.product.insert({"productno":"p2","description":"desktop","company":"apple","price":120000});
+db.product.insert({"productno":"p3","description":"smartwatch","company":"samsung","price":17000});
+db.product.insert({"productno":"p4","description":"speaker","company":"jbl","price":13000});
+db.product.insert({"productno":"p5","description":"smartphone","company":"samsung","price":14000});
+db.product.find();
+db.product.find().pretty();
+db.product.find({productno:"p3"});
+db.product.find({company:"samsung"});
+db.product.find().sort({"price":1}).pretty();
+db.product.find().sort({"price":-1}).pretty();
+db.product.find({"price":{$gt:15000}}).pretty();
+db.product.update({"productno": "p1"},{$set:{"price":10000}});
+db.product.find({"productno":"p1"}).pretty();
+db.dropDatabase()
+
+remove
+db.books.remove({"isbnno": 10201}, 1);
+
+limit
+db.books.find().limit(3);
