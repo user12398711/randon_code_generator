@@ -1,0 +1,7 @@
+number_1 = str(input("Enter number 1: ")).strip()
+number_2 = str(input("Enter number 2: ")).strip()
+number_3 = str(input("Enter number 3: ")).strip()
+operator_1 = str(input("Enter operator 1: ")).strip()
+operator_2 = str(input("Enter operator 2: ")).strip()
+result = eval(number_1 + operator_1 + number_2 + operator_2 + number_3)
+print(number_1, operator_1, number_2, operator_2, number_3, "=", result)
