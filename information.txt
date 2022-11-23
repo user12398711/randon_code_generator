@@ -1,0 +1,146 @@
+# 1.A
+v1<-c(3,8,4,5,0,11)
+v2<-c(4,11,0,8,1,2)
+
+print(v1+v2) # addition
+print(v1-v2) # subtraction
+print(v1*v2) # multiplication
+print(v1/v2) # division
+
+
+# 2.A CREATE TWO 2*3 MATRICES
+v1<-matrix(c(3,8,4,5,0,11), nrow=2, byrow=TRUE)
+print(v1)
+v2<-matrix(c(3,8,4,5,0,11), nrow=2, byrow=TRUE)
+print(v2)
+
+
+# 2.B CREATE TWO 3*3 MATRICES
+v1<-matrix(c(3,8,4,5,0,11,8,1,2), nrow=3, byrow=TRUE)
+print(v1)
+v2<-matrix(c(4,11,0,8,1,2,5,0,11), nrow=3, byrow=TRUE)
+print(v2)
+
+print(v1+v2) # addition
+print(v1-v2) # subtraction
+print(v1*v2) # multiplication
+print(v1%*%v2) # multiplication (not symmetrical)
+print(v1/v2) # division
+print(det(v1)) # determinant
+print(solve(v1)) # Solving system equation i.e. ax+by+cz = 0
+print(sum(diag(v1)))
+
+
+# 3 Create graph for the data – Pie chart
+x <-  c(21, 62, 10,53)
+labels <-  c("London","New York","Singapore","Mumbai")
+piepercent<- round(100*x/sum(x), 1)
+
+# Give the chart file a name.
+png(file = "city_percentage_legends1.jpg")
+
+# Plot the chart.
+pie(x, labels = piepercent, main = "City pie chart",col = rainbow(length(x)))
+legend("topright", c("London","New York","Singapore","Mumbai"), fill = rainbow(length(x)))
+
+# Save the file.
+dev.off()
+
+
+# 4 Create graph for the data – Histogram
+v <- c(9,13,21,8,36,22,12,41,31,33,19)
+
+# Give the chart file a name.
+png(file = "histogram_lim_breaks.png")
+
+# Plot the chart.
+hist(v,xlab = "Weight",col = "green",border = "red", xlim = c(0,40), ylim = c(0,5), breaks = 5)
+
+# Save the file.
+dev.off()
+
+
+# 5 Measure of central tendency – Mean, median, mode
+getmode <- function(v) {
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+x <- c(12,7,3,4.2,18,2,54,-21,8,-5)
+print(mean(x))
+print(median(x))
+print(getmode(x))
+
+charv <- c("o","it","the","it","it")
+print(getmode(charv))
+
+
+# 6 Quartile, Range and inter-quartile range
+x<-c(6,8,9,5,7,3,5,9,10,8)
+
+quantile(x)
+Q1 = unname(quantile(x))[2]
+Q3 = unname(quantile(x))[4]
+print(Q3-Q1) # interquartile
+
+range(x)
+R1 = unname(range(x))[1]
+R2 = unname(range(x))[2]
+print(R2-R1) # range 
+
+
+# 8 Import data from excel
+# 1. Create excel sheet with name, subject and marks
+# 2. Rstudio -> Environment ->import dataset - > browse file ->ok
+
+
+# 9 Linear regression
+x <- c(151, 174, 138, 186, 128, 136, 179, 163, 152, 131)
+y <- c(63, 81, 56, 91, 47, 57, 76, 72, 62, 48)
+a <- lm(y~x)  # liear model
+print(a)
+
+r <- lm(y~x)
+a <- data.frame(x = 170)
+result <- predict(r,a)
+print(result)
+
+
+# 10 Multiple regression
+input <- mtcars[,c("mpg","disp","hp","wt")]
+model <- lm(mpg~disp+hp+wt, data = input)
+print(model)
+
+cat("# # # # The Coefficient Values # # # ","\n")
+a <- coef(model)[1]
+print(a)
+
+xdisp <- coef(model)[2]
+xhp <- coef(model)[3]
+xwt <- coef(model)[4]
+
+print(xdisp)
+print(xhp)
+print(xwt)
+
+# Substitute Y = a + Xdisp.x1 + Xhp.x2 + Xwt.x3
+# For a car with disp = 221, hp = 102 and wt = 2.91 the predicted mileage is
+res = a + (xdisp * 221) + (xhp * 102) + (xwt * 2.91)
+print(res)
+
+
+# 11.A Degree of Correlation (Pearson’s)
+x = c(10,12,13,14,18,20,25,30,32,35)
+y = c(18,22,30,25,35,17,30,35,40,45)
+
+a = cor(x,y)
+print(a)
+
+
+# 11.B Degree of Correlation (Spearmans’s)
+x = c(10,12,13,14,18,20,25,30,32,35)
+y = c(18,22,30,25,35,17,30,35,40,45)
+
+a = cor(x,y,method = "spearman")
+print(a)
+
